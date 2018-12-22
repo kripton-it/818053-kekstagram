@@ -2,8 +2,8 @@
 
 (function () {
 
-  var PHOTOS_NUMBER = 25;
-  var MIXED_NUMBERS = window.utils.getMixedArray(window.utils.getSequentialArray(PHOTOS_NUMBER));
+  var PICTURES_NUMBER = 25;
+  var MIXED_NUMBERS = window.utils.getMixedArray(window.utils.getSequentialArray(PICTURES_NUMBER));
   var MIN_LIKES_NUMBER = 15;
   var MAX_LIKES_NUMBER = 200;
   var MIN_COMMENTS_NUMBER = 0;
@@ -64,27 +64,27 @@
     return comments;
   }
 
-  function generatePhoto(index) {
+  function generatePicture(index) {
     var commentsNumber = window.utils.getRandomInteger(MIN_COMMENTS_NUMBER, MAX_COMMENTS_NUMBER);
-    var photo = {
+    var picture = {
       url: 'photos/' + MIXED_NUMBERS[index] + '.jpg',
       likes: window.utils.getRandomInteger(MIN_LIKES_NUMBER, MAX_LIKES_NUMBER),
       comments: generateComments(commentsNumber)
     };
-    return photo;
+    return picture;
   }
 
-  function generatePhotos() {
-    var photos = [];
+  function generatePictures() {
+    var pictures = [];
 
-    for (var i = 0; i < PHOTOS_NUMBER; i++) {
-      photos[i] = generatePhoto(i);
+    for (var i = 0; i < PICTURES_NUMBER; i++) {
+      pictures[i] = generatePicture(i);
     }
-    return photos;
+    return pictures;
   }
 
   window.data = {
-    generate: generatePhotos
+    generate: generatePictures
 };
 
 })();
