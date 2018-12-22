@@ -3,7 +3,7 @@
 (function () {
 
   var containerElement = document.querySelector('.pictures');
-/*
+  /*
   function showPictures(pictures) {
     var fragment = document.createDocumentFragment();
     pictures.forEach(function (picture) {

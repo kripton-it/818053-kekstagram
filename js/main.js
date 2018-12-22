@@ -2,14 +2,20 @@
 
 (function () {
 
-  updatePictures(window.data.generate());
+  var bigPictureElement = document.querySelector('.big-picture');
+  var pictures = window.data.generate();
 
-  function updatePictures(pictures) {
-    var fragment = preparePictures(pictures);
+  updatePictures();
+  bigPictureElement.classList.remove('hidden');
+  window.bigPicture.create(pictures[0]);
+
+
+  function updatePictures() {
+    var fragment = preparePictures();
     window.container.fill(fragment);
   }
 
-  function preparePictures(pictures) {
+  function preparePictures() {
     var fragment = document.createDocumentFragment();
     pictures.forEach(function (picture) {
       var newPictureElement = window.picture.create(picture);

@@ -38,9 +38,6 @@
       case 2:
         message = mixedMessages[0] + ' ' + mixedMessages[1];
         break;
-      default:
-        alert('default');
-        break;
     }
 
     return message;
@@ -69,7 +66,8 @@
     var picture = {
       url: 'photos/' + MIXED_NUMBERS[index] + '.jpg',
       likes: window.utils.getRandomInteger(MIN_LIKES_NUMBER, MAX_LIKES_NUMBER),
-      comments: generateComments(commentsNumber)
+      comments: generateComments(commentsNumber),
+      description: 'Здесь будет описание фотографии'
     };
     return picture;
   }
@@ -85,6 +83,6 @@
 
   window.data = {
     generate: generatePictures
-};
+  };
 
 })();
