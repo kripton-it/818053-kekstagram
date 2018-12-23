@@ -1,5 +1,7 @@
 'use strict';
 
+var ESC_KEYCODE = 27;
+
 (function () {
   function getSequentialArray(elementsNumber) {
     var array = [];
@@ -31,6 +33,7 @@
   }
 
   window.utils = {
+    ESC_KEYCODE: ESC_KEYCODE,
     getRandomInteger: getRandomInteger,
     getMixedArray: getMixedArray,
     getRandomElement: getRandomElement,

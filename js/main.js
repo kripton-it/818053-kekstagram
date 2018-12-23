@@ -2,17 +2,17 @@
 
 (function () {
 
-  var bigPictureElement = document.querySelector('.big-picture');
+  // var bigPictureElement = document.querySelector('.big-picture');
   var pictures = window.data.generate();
 
-  updatePictures();
-  bigPictureElement.classList.remove('hidden');
-  window.bigPicture.create(pictures[0]);
+  updateGalleryContent();
+  // bigPictureElement.classList.remove('hidden');
+  // window.bigPicture.create(pictures[0]);
 
 
-  function updatePictures() {
+  function updateGalleryContent() {
     var fragment = preparePictures();
-    window.container.fill(fragment);
+    window.gallery.fill(fragment);
   }
 
   function preparePictures() {
@@ -26,4 +26,5 @@
 
     return fragment;
   }
+
 })();
