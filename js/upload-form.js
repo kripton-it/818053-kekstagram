@@ -6,9 +6,6 @@
   var uploadFileElement = uploadFormElement.querySelector('#upload-file');
   var overlayElement = uploadFormElement.querySelector('.img-upload__overlay');
 
-  // временно
-  showOverlay();
-
   uploadFileElement.addEventListener('change', function (evt) {
     evt.preventDefault();
     showOverlay();
