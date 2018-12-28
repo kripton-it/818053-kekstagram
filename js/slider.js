@@ -9,16 +9,17 @@
   var sliderValueElement = slider.querySelector('.effect-level__value');
   var sliderWidth;
   var startPinPosition;
+  var sliderPinPosition;
+  var sliderPinMouseMoveCallback;
+  var sliderPinMouseUpCallback;
 
   updateSlider(sliderStartValue);
   sliderPinElement.addEventListener('mousedown', onSliderPinMousedown);
 
-  function updateSlider(level) {
-    var zeroValue = '0';
-    var defaultValue = 100 * level + '%';
-    sliderPinElement.style.left = level > 0 ? defaultValue : zeroValue;
-    sliderBarElement.style.width = level > 0 ? defaultValue : zeroValue;
-    sliderValueElement.value = level > 0 ? defaultValue : zeroValue;
+  function updateSlider(position) {
+    sliderPinElement.style.left = position + 'px';
+    sliderBarElement.style.width = position + 'px';
+    sliderValueElement.value = Math.round(position / sliderWidth);
   }
 
   function onSliderPinMousedown(evt) {
@@ -37,21 +38,19 @@
 
     startPinPosition = evt.clientX;
 
-    if (getSliderLevel() < 0) {
-      updateSlider(0);
-    } else if (getSliderLevel() > 1) {
-      updateSlider(1);
+    if (sliderPinElement.offsetLeft + shift < 0) {
+      sliderPinPosition = 0;
+    } else if (sliderPinElement.offsetLeft + shift > sliderWidth) {
+      sliderPinPosition = sliderWidth;
     } else {
-      console.log(sliderPinElement.offsetLeft);
-      console.log(shift);
-      console.log(sliderWidth);
-      console.log('********');
-      updateSlider((sliderPinElement.offsetLeft + shift) / (sliderWidth - 1));
+      sliderPinPosition = sliderPinElement.offsetLeft + shift;
     }
-    /*
-        if (sliderPinMouseMoveCallback) {
-          sliderPinMouseMoveCallback();
-        }*/
+
+    updateSlider(Math.round(sliderPinPosition));
+
+    if (sliderPinMouseMoveCallback) {
+      sliderPinMouseMoveCallback();
+    }
   }
 
   function onSliderPinMouseup(evt) {
@@ -59,17 +58,33 @@
 
     document.removeEventListener('mousemove', onSliderPinMousemove);
     document.removeEventListener('mouseup', onSliderPinMouseup);
-    /*
-        if (sliderPinMouseUpCallback) {
-          sliderPinMouseUpCallback();
-        }*/
+
+    if (sliderPinMouseUpCallback) {
+      sliderPinMouseUpCallback();
+    }
+  }
+
+  function setSliderPinMouseMoveCallback(callback) {
+    sliderPinMouseMoveCallback = callback;
+  }
+
+  function setSliderPinMouseUpCallback(callback) {
+    sliderPinMouseUpCallback = callback;
   }
 
   function getSliderLevel() {
     return parseInt(sliderPinElement.style.left, 10) / 100;
   }
 
+  function setSliderLevel(level) {
+    sliderWidth = sliderPinElement.parentNode.offsetWidth;
+    updateSlider(level * sliderWidth);
+  }
+
   window.slider = {
-    level: getSliderLevel
+    level: getSliderLevel,
+    setLevel: setSliderLevel,
+    setPinMouseMoveCallback: setSliderPinMouseMoveCallback,
+    setPinMouseUpCallback: setSliderPinMouseUpCallback
   };
 })();

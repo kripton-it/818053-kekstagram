@@ -53,17 +53,28 @@
   }
 
   function applyEffect(effect) {
+    var sliderPinMouseMoveCallback;
     effectsElement.querySelector('#effect-' + effect).checked = true;
     previewElement.className = '';
     previewElement.classList.add('effects__preview--' + effect);
     switch (effect) {
       case 'none':
         sliderElement.classList.add('hidden');
+        sliderPinMouseMoveCallback = null;
+        break;
+      case 'chrome':
+        sliderElement.classList.remove('hidden');
+        sliderPinMouseMoveCallback = function() {
+          console.log('test');
+        };
         break;
       default:
         sliderElement.classList.remove('hidden');
+        sliderPinMouseMoveCallback = null;
         break;
     }
+    window.slider.setLevel(1);
+    window.slider.setPinMouseMoveCallback(sliderPinMouseMoveCallback);
   }
 
   window.effects = {
