@@ -10,23 +10,9 @@
   var startPinPosition;
   var sliderPinPosition;
   var sliderPinMouseMoveCallback;
-  var sliderPinMouseUpCallback;
+  // var sliderPinMouseUpCallback;
 
   sliderPinElement.addEventListener('mousedown', onSliderPinMousedown);
-
-  function updateSlider(position) {
-    sliderWidth = sliderPinElement.parentNode.offsetWidth;
-    sliderPinElement.style.left = position + 'px';
-    sliderBarElement.style.width = position + 'px';
-    sliderValueElement.value = Math.round(position / sliderWidth);
-  }
-
-  function resetSlider() {
-    slider = document.querySelector('.img-upload__effect-level');
-    sliderPinElement = slider.querySelector('.effect-level__pin');
-    sliderWidth = sliderPinElement.parentNode.offsetWidth;
-    updateSlider(sliderWidth);
-  }
 
   function onSliderPinMousedown(evt) {
     evt.preventDefault();
@@ -64,21 +50,20 @@
 
     document.removeEventListener('mousemove', onSliderPinMousemove);
     document.removeEventListener('mouseup', onSliderPinMouseup);
-/*
+  /*
     if (sliderPinMouseUpCallback) {
       sliderPinMouseUpCallback();
     }
     */
   }
 
-  function setSliderPinMouseMoveCallback(callback) {
-    sliderPinMouseMoveCallback = callback;
+  function updateSlider(position) {
+    sliderWidth = sliderPinElement.parentNode.offsetWidth;
+    sliderPinElement.style.left = position + 'px';
+    sliderBarElement.style.width = position + 'px';
+    sliderValueElement.value = Math.round(position / sliderWidth);
   }
-/*
-  function setSliderPinMouseUpCallback(callback) {
-    sliderPinMouseUpCallback = callback;
-  }
-*/
+
   function getSliderLevel() {
     sliderWidth = sliderPinElement.parentNode.offsetWidth;
     return slider.classList.contains('hidden') ? 1 : parseInt(sliderPinElement.style.left, 10) / sliderWidth;
@@ -88,6 +73,20 @@
     sliderWidth = sliderPinElement.parentNode.offsetWidth;
     updateSlider(level * sliderWidth);
   }
+
+  function resetSlider() {
+    sliderWidth = sliderPinElement.parentNode.offsetWidth;
+    updateSlider(sliderWidth);
+  }
+
+  function setSliderPinMouseMoveCallback(callback) {
+    sliderPinMouseMoveCallback = callback;
+  }
+  /*
+  function setSliderPinMouseUpCallback(callback) {
+    sliderPinMouseUpCallback = callback;
+  }
+*/
 
   window.slider = {
     getLevel: getSliderLevel,
