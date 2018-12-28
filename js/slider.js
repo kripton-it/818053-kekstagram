@@ -2,7 +2,6 @@
 
 (function () {
 
-  var sliderStartValue = 1;
   var slider = document.querySelector('.img-upload__effect-level');
   var sliderPinElement = slider.querySelector('.effect-level__pin');
   var sliderBarElement = slider.querySelector('.effect-level__depth');
@@ -13,13 +12,20 @@
   var sliderPinMouseMoveCallback;
   var sliderPinMouseUpCallback;
 
-  updateSlider(sliderStartValue);
   sliderPinElement.addEventListener('mousedown', onSliderPinMousedown);
 
   function updateSlider(position) {
+    sliderWidth = sliderPinElement.parentNode.offsetWidth;
     sliderPinElement.style.left = position + 'px';
     sliderBarElement.style.width = position + 'px';
     sliderValueElement.value = Math.round(position / sliderWidth);
+  }
+
+  function resetSlider() {
+    slider = document.querySelector('.img-upload__effect-level');
+    sliderPinElement = slider.querySelector('.effect-level__pin');
+    sliderWidth = sliderPinElement.parentNode.offsetWidth;
+    updateSlider(sliderWidth);
   }
 
   function onSliderPinMousedown(evt) {
@@ -58,22 +64,24 @@
 
     document.removeEventListener('mousemove', onSliderPinMousemove);
     document.removeEventListener('mouseup', onSliderPinMouseup);
-
+/*
     if (sliderPinMouseUpCallback) {
       sliderPinMouseUpCallback();
     }
+    */
   }
 
   function setSliderPinMouseMoveCallback(callback) {
     sliderPinMouseMoveCallback = callback;
   }
-
+/*
   function setSliderPinMouseUpCallback(callback) {
     sliderPinMouseUpCallback = callback;
   }
-
+*/
   function getSliderLevel() {
-    return parseInt(sliderPinElement.style.left, 10) / 100;
+    sliderWidth = sliderPinElement.parentNode.offsetWidth;
+    return slider.classList.contains('hidden') ? 1 : parseInt(sliderPinElement.style.left, 10) / sliderWidth;
   }
 
   function setSliderLevel(level) {
@@ -82,9 +90,10 @@
   }
 
   window.slider = {
-    level: getSliderLevel,
+    getLevel: getSliderLevel,
     setLevel: setSliderLevel,
-    setPinMouseMoveCallback: setSliderPinMouseMoveCallback,
-    setPinMouseUpCallback: setSliderPinMouseUpCallback
+    reset: resetSlider,
+    // setPinMouseUpCallback: setSliderPinMouseUpCallback,
+    setPinMouseMoveCallback: setSliderPinMouseMoveCallback
   };
 })();

@@ -12,7 +12,9 @@
   var scaleControlBiggerElement = scaleControlElement.querySelector('.scale__control--bigger');
   var scaleControlValueElement = scaleControlElement.querySelector('.scale__control--value');
   var defaultScale = '100%';
+  var filterValue;
 
+  window.slider.setLevel(1);
   applyEffect(defaultEffect);
   scaleControlValueElement.value = defaultScale;
   updateScale();
@@ -28,6 +30,7 @@
   effectsElement.addEventListener('change', function () {
     var activeEffect = effectsElement.querySelector('input:checked').value;
     applyEffect(activeEffect);
+    window.slider.reset();
   });
 
   function updatePreviewScale() {
@@ -52,29 +55,71 @@
     updatePreviewScale();
   }
 
+  function changeEffect(effect) {
+    var level = window.slider.getLevel();
+    filterValue = 'none';
+    switch (effect) {
+      case 'chrome':
+        filterValue = 'grayscale(' + (Math.round(100 * level) / 100) + ')';
+        break;
+      case 'sepia':
+        filterValue = 'sepia(' + (Math.round(100 * level) / 100) + ')';
+        break;
+      case 'marvin':
+        filterValue = 'invert(' + Math.round(100 * level) + '%)';
+        break;
+      case 'phobos':
+        filterValue = 'blur(' + (3 * Math.round(100 * level) / 100) + 'px)';
+        break;
+      case 'heat':
+        filterValue = 'brightness(' + (1 + 2 * Math.round(100 * level) / 100) + ')';
+        break;
+    }
+    previewElement.style.filter = filterValue;
+  }
+
+  function sliderPinMouseMoveCallback(effect) {
+    if (effect !== 'none') {
+      changeEffect(effect);
+    }
+  }
+
   function applyEffect(effect) {
-    var sliderPinMouseMoveCallback;
     effectsElement.querySelector('#effect-' + effect).checked = true;
     previewElement.className = '';
     previewElement.classList.add('effects__preview--' + effect);
+    sliderPinMouseMoveCallback(effect);
     switch (effect) {
       case 'none':
         sliderElement.classList.add('hidden');
-        sliderPinMouseMoveCallback = null;
+        filterValue = 'none';
         break;
       case 'chrome':
         sliderElement.classList.remove('hidden');
-        sliderPinMouseMoveCallback = function() {
-          console.log('test');
-        };
+        filterValue = 'grayscale(1)';
         break;
-      default:
+      case 'sepia':
         sliderElement.classList.remove('hidden');
-        sliderPinMouseMoveCallback = null;
+        filterValue = 'sepia(1)';
+        break;
+      case 'marvin':
+        sliderElement.classList.remove('hidden');
+        filterValue = 'invert(100%)';
+        break;
+      case 'phobos':
+        sliderElement.classList.remove('hidden');
+        filterValue = 'blur(3px)';
+        break;
+      case 'heat':
+        sliderElement.classList.remove('hidden');
+        filterValue = 'brightness(3)';
         break;
     }
+    previewElement.style.filter = filterValue;
     window.slider.setLevel(1);
-    window.slider.setPinMouseMoveCallback(sliderPinMouseMoveCallback);
+    window.slider.setPinMouseMoveCallback(function () {
+      sliderPinMouseMoveCallback(effect);
+    });
   }
 
   window.effects = {
